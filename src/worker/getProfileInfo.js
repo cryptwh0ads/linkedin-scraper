@@ -6,12 +6,17 @@ const options = {
   hasToGetContactInfo: true,
 };
 
-const getProfile = () => {
-  scrapedin(options)
+const getProfile = async (props) => {
+  var data;
+  await scrapedin(options)
     .then((profileScraper) =>
-      profileScraper("https://www.linkedin.com/in/some-profile"),
+      profileScraper(`https://www.linkedin.com/in/${props}`),
     )
-    .then((profile) => console.log(profile));
+    .then((profile) => (data = profile));
+
+  return {
+    data,
+  };
 };
 
 module.exports = getProfile;
