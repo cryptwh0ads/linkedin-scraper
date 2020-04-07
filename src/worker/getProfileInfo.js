@@ -14,6 +14,4 @@ const getProfile = () => {
     .then((profile) => console.log(profile));
 };
 
-getProfile();
-
 module.exports = getProfile;
