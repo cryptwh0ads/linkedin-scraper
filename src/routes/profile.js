@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const controller = require("../controller/profile");
 
-router.get("/", controller.get());
+router.post("/", controller.getProfileInfo());
 
 module.exports = router;
