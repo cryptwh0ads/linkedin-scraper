@@ -13,7 +13,19 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      last_name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      passwd: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      role: {
         type: Sequelize.STRING,
         allowNull: false,
       },

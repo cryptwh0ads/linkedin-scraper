@@ -1,17 +1,48 @@
 const User = require("../models/User");
+const bcrypt = require("bcrypt");
 
 const index = async (req, res) => {
   const users = await User.findAll();
 
-  return res.json(users);
+  if (users) {
+    return res.json(users);
+  } else {
+    res.json({ data: "Not found" });
+  }
 };
 
-const store = async (req, res) => {
-  const { name, email } = req.body;
+const store = (req, res) => {
+  let { name, last_name, email, passwd, role } = req.body;
 
-  const user = await User.create({ name, email });
+  try {
+    User.findOne({
+      where: {
+        email,
+      },
+    })
+      .then(async (user) => {
+        if (!user) {
+          const passHashed = bcrypt.hashSync(passwd, 10);
+          passwd = passHashed;
+          const user = await User.create({
+            name,
+            last_name,
+            email,
+            passwd,
+            role,
+          });
 
-  return res.json(user);
+          return res.status(200).send(user);
+        } else {
+          res.send({ error: "User already exists!" });
+        }
+      })
+      .catch((err) => {
+        res.send("error: " + err);
+      });
+  } catch (err) {
+    return res.status(400).send({ error: err });
+  }
 };
 
 module.exports = {
