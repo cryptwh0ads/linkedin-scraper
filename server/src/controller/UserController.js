@@ -32,9 +32,11 @@ const store = (req, res) => {
             role,
           });
 
-          return res.status(200).send(user);
+          return res
+            .status(201)
+            .send(`User ${user.name} has been created with successfully`);
         } else {
-          res.send({ error: "User already exists!" });
+          res.status(409).send({ error: "User already exists!" });
         }
       })
       .catch((err) => {
