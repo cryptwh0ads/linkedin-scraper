@@ -12,7 +12,22 @@ const index = async (req, res) => {
   }
 };
 
-const getOne = async (req, res) => {};
+const getOne = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findOne({
+      where: { id },
+    }).then((user) => {
+      if (user) {
+        return res.status(200).send({ data: user });
+      } else {
+        return res.status(404).send({ error: `User couldn't found` });
+      }
+    });
+  } catch (err) {
+    return res.status(500).send({ error: err });
+  }
+};
 
 // Create user
 const store = (req, res) => {
@@ -24,8 +39,8 @@ const store = (req, res) => {
         email,
       },
     })
-      .then(async (user) => {
-        if (!user) {
+      .then(async (email) => {
+        if (!email) {
           const passHashed = bcrypt.hashSync(passwd, 10);
           passwd = passHashed;
           const user = await User.create({
@@ -40,7 +55,7 @@ const store = (req, res) => {
             .status(201)
             .send(`User ${user.name} has been created with successfully`);
         } else {
-          res.status(409).send({ error: "User already exists!" });
+          res.status(409).send({ error: "Email already exists!" });
         }
       })
       .catch((err) => {
@@ -89,7 +104,7 @@ const updateUser = async (req, res) => {
       const updatedUser = await User.findOne({ where: { id } });
       return res.status(200).json({ data: updatedUser });
     } else {
-      return res.status(400).send({ error: "User not found" });
+      return res.status(400).send({ error: `User couldn't found` });
     }
   } catch (err) {
     return res.status(500).send({ error: err });
