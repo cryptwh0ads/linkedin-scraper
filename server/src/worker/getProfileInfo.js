@@ -11,11 +11,41 @@ const getProfile = async (props) => {
     .then((profileScraper) =>
       profileScraper(`https://www.linkedin.com/in/${props[0]}`),
     )
-    .catch((err) => (data = "Error was been found"))
+    .catch((err) => (data = err))
     .then((profile) => (data = profile));
+  var { name } = data.profileAlternative;
+  var { contact, positions } = data;
+
+  positions = positions[0];
+
+  let email, phone, linkedInUrl;
+
+  try {
+    contact.map((ctt) => {
+      if (ctt.type.includes("Perfil") || ctt.type.includes("perfil")) {
+        linkedInUrl = ctt.values[0];
+      }
+      if (ctt.type === "Telefone") {
+        phone = ctt.values[0];
+      }
+      if (ctt.type === "E-mail") {
+        email = ctt.values[0];
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
 
   return {
-    data,
+    data: {
+      name,
+      contacts: {
+        linkedInUrl,
+        email,
+        phone,
+      },
+      positions,
+    },
   };
 };
 
