@@ -5,16 +5,19 @@ const getProfile = async (props) => {
     email: props[1],
     password: props[2],
     hasToGetContactInfo: true,
+    hasToLog: true,
+    isHeadless: true,
+    type: "profile",
   };
-  var data;
+  var dataProfile;
   await scrapedin(options)
     .then((profileScraper) =>
       profileScraper(`https://www.linkedin.com/in/${props[0]}`),
     )
-    .catch((err) => (data = err))
-    .then((profile) => (data = profile));
-  var { name } = data.profileAlternative;
-  var { contact, positions } = data;
+    .catch((err) => (dataProfile = err))
+    .then((profile) => (dataProfile = profile));
+  var { name } = dataProfile.profileAlternative;
+  var { contact, positions } = dataProfile;
 
   positions = positions[0];
 
@@ -36,6 +39,26 @@ const getProfile = async (props) => {
     console.log(err);
   }
 
+  var companyUrl = positions.companyLinkedinUrl.split("company/")[1];
+
+  const optionsCompany = {
+    email: props[1],
+    password: props[2],
+    hasToGetContactInfo: true,
+    hasToLog: true,
+    isHeadless: true,
+    type: "company",
+  };
+  var dataCompany;
+  await scrapedin(optionsCompany)
+    .then((profileScraper) =>
+      profileScraper(`https://www.linkedin.com/company/${companyUrl}about`),
+    )
+    .catch((err) => (dataCompany = err))
+    .then((company) => (dataCompany = company));
+  var { companyName } = dataCompany.company;
+  var { site, setor } = dataCompany.info;
+
   return {
     data: {
       name,
@@ -45,6 +68,11 @@ const getProfile = async (props) => {
         phone,
       },
       positions,
+      companyInfo: {
+        companyName,
+        site,
+        setor,
+      },
     },
   };
 };
