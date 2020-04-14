@@ -1,9 +1,10 @@
 const scrapedin = require("scrapedin");
+const cookies = require("./cookies");
 
 const getCompany = async (props) => {
   const options = {
-    email: "xxcruizz@gmail.com",
-    password: "vcm004699",
+    cookies,
+
     hasToGetContactInfo: true,
     hasToLog: true,
     isHeadless: true,

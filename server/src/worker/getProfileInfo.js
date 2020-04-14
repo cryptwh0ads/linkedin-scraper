@@ -1,9 +1,9 @@
 const scrapedin = require("scrapedin");
+const cookies = require("./cookies");
 
 const getProfile = async (props) => {
   const options = {
-    email: props[1],
-    password: props[2],
+    cookies,
     hasToGetContactInfo: true,
     hasToLog: true,
     isHeadless: true,
@@ -43,8 +43,7 @@ const getProfile = async (props) => {
   var companyUrl = positions.companyLinkedinUrl.split("company/")[1];
 
   const optionsCompany = {
-    email: props[1],
-    password: props[2],
+    cookies,
     hasToGetContactInfo: true,
     hasToLog: true,
     isHeadless: true,
