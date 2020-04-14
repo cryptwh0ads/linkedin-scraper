@@ -12,7 +12,9 @@ const getCompany = async (props) => {
   var data;
   await scrapedin(options)
     .then((profileScraper) =>
-      profileScraper(`https://www.linkedin.com/company/google/about`),
+      profileScraper(
+        `https://www.linkedin.com/company/kivalita-consulting/about`,
+      ),
     )
     .catch((err) => (data = err))
     .then((profile) => (data = profile));

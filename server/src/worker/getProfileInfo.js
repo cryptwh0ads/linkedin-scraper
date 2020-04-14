@@ -14,8 +14,9 @@ const getProfile = async (props) => {
     .then((profileScraper) =>
       profileScraper(`https://www.linkedin.com/in/${props[0]}`),
     )
-    .catch((err) => (dataProfile = err))
-    .then((profile) => (dataProfile = profile));
+    .then((profile) => (dataProfile = profile))
+    .catch((err) => (dataProfile = err));
+
   var { name } = dataProfile.profileAlternative;
   var { contact, positions } = dataProfile;
 
@@ -54,8 +55,8 @@ const getProfile = async (props) => {
     .then((profileScraper) =>
       profileScraper(`https://www.linkedin.com/company/${companyUrl}about`),
     )
-    .catch((err) => (dataCompany = err))
-    .then((company) => (dataCompany = company));
+    .then((company) => (dataCompany = company))
+    .catch((err) => (dataCompany = err));
   var { companyName } = dataCompany.company;
   var { site, setor } = dataCompany.info;
 
