@@ -1,12 +1,25 @@
 const getProfile = require("../worker/getProfileInfo");
 
-const getProfileInfo = () => async (req, res) => {
-  const { profileName } = req.params;
-  const profileFetched = await getProfile([profileName]);
+const getInfo = () => async (req, res) => {
+  const { data } = req.body;
 
-  res.send(profileFetched);
+  const Profiles = [];
+  Object.keys(data).map(async (item) => {
+    var link = data[item].url.split("in/")[1];
+    await getProfile([link])
+      .then((doc) => {
+        Profiles.push(doc);
+      })
+      .then(() => {
+        res.send(Profiles);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.send({ error: err.message });
+      });
+  });
 };
 
 module.exports = {
-  getProfileInfo,
+  getInfo,
 };
